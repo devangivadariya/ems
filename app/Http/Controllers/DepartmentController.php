@@ -14,26 +14,35 @@ class DepartmentController extends Controller
     }
     public function add_dep(Request $request){
 
-        $request->validate([
-            'name' => 'required'
-        ]);
-        
         $id = $request->id;
         $del_id = $request->del_id;
         if(isset($id)){
+
+            $request->validate([
+                'name' => 'required'
+            ]);
+
             $affected = DB::table('departments')->where('id', $id)->update([
               'name' => $request->name
             ]);
+            $message = 'Data Updated successfully.';
         }
         elseif(isset($del_id)){
             $affected = DB::table('departments')->where('id', $del_id)->delete();
+            $message = 'Data Deleted successfully.';
         }
         else {
+
+            $request->validate([
+                'name' => 'required'
+            ]);
+
             $department = new Department;
             $department->name =  $request->name;
             $department->save();
+            $message = 'Data Added successfully.';
         }
-        return redirect()->route('departments')->with('success','Data Added successfully.');
+        return redirect()->route('departments')->with('success',$message);
     }
     
 }

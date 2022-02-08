@@ -19,22 +19,29 @@ class DesignationsController extends Controller
     }
     public function add_des(Request $request)
     {
-        $request->validate([
-            'designations' => 'required'
-        ]);
         
         $del_id = $request->del_id;
         $edit_id = $request->edit_id;
         if(isset($del_id)){
             $affected = DB::table('designations')->where('id', $del_id)->delete();
+            $message = 'Data Deleted successfully.';
         }
         elseif(isset($edit_id)){
+
+            $request->validate([
+                'designations' => 'required'
+            ]);
+
             $affected = DB::table('designations')->where('id', $edit_id)->update([
                 'department_id' => $request->id,
                 'designations' => $request->designations
               ]);
+            $message = 'Data Updated successfully.';
         }
         else{
+            $request->validate([
+                'designations' => 'required'
+            ]);
             $department = Department::find($request->id);
  
             $designation = new Designations;
@@ -42,8 +49,9 @@ class DesignationsController extends Controller
             $designation->designations = $request->designations;
             
             $designation->department()->associate($department)->save();
+            $message = 'Data Added successfully.';
         }
-        return redirect()->route('designations')->with('success','Comment Added successfully.');
+        return redirect()->route('designations')->with('success',$message);
         
     }
 }
