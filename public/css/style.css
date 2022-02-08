@@ -8503,3 +8503,7 @@ ul.comment-list li ul.children {
 	justify-content: center;
 	font-size: 11px;
 }
+
+#delete_btn{
+	width: 100%;
+}

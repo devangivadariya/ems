@@ -1,5 +1,5 @@
-@extends('layout.mainlayout')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 			
@@ -22,21 +22,21 @@
                     </div>
                 </div>
                 <!-- /Page Header -->
-                @if ($message = Session::get('success'))
+                <?php if($message = Session::get('success')): ?>
 								<div class="alert alert-success">
-									<p>{{ $message }}</p>
+									<p><?php echo e($message); ?></p>
 								</div>
-							@endif   
-						@if ($errors->any())
+							<?php endif; ?>   
+						<?php if($errors->any()): ?>
 							<div class="alert alert-danger">
 								<strong>Whoops!</strong> There were some problems with your input.<br><br>
 								<ul>
-									@foreach ($errors->all() as $error)
-										<li>{{ $error }}</li>
-									@endforeach
+									<?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<li><?php echo e($error); ?></li>
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 								</ul>
 							</div>
-						@endif
+						<?php endif; ?>
                 <div class="row">
                     <div class="col-md-12">
                         <div>
@@ -49,21 +49,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($name as $data)
+                                <?php $__currentLoopData = $name; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
-                                        <td>{{$data->name}}</td>
+                                        <td><?php echo e($loop->iteration); ?></td>
+                                        <td><?php echo e($data->name); ?></td>
                                         <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item edit_btn" href="#" data-toggle="modal" data-target="#edit_department" id="{{$data->id}}" data-name="{{$data->name}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item del_btn" href="#" data-toggle="modal" data-target="#delete_department" id="{{$data->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                <a class="dropdown-item edit_btn" href="#" data-toggle="modal" data-target="#edit_department" id="<?php echo e($data->id); ?>" data-name="<?php echo e($data->name); ?>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item del_btn" href="#" data-toggle="modal" data-target="#delete_department" id="<?php echo e($data->id); ?>"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
@@ -83,8 +83,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{route('add_dep')}}" method="post">
-                                @csrf
+                            <form action="<?php echo e(route('add_dep')); ?>" method="post">
+                                <?php echo csrf_field(); ?>
                                 <div class="form-group">
                                     <label>Department Name <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" name="name">
@@ -111,8 +111,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{route('add_dep')}}" method="post">
-                                @csrf
+                            <form action="<?php echo e(route('add_dep')); ?>" method="post">
+                                <?php echo csrf_field(); ?>
                                 <div class="form-group">
                                     <input type="hidden" value="" name='id' id="dep_id">
                                     <label>Department Name <span class="text-danger">*</span></label>
@@ -140,8 +140,8 @@
                                 <p>Are you sure want to delete?</p>
                             </div>
                             <div class="modal-btn delete-action">
-                            <form action="{{route('add_dep')}}" method="post">
-                                @csrf
+                            <form action="<?php echo e(route('add_dep')); ?>" method="post">
+                                <?php echo csrf_field(); ?>
                                 <input type="hidden" value="" name='del_id' id="del_id">
                                     <div class="row">
                                         <div class="col-6">
@@ -177,4 +177,5 @@
             
         });
       </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.mainlayout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\ems\resources\views/departments.blade.php ENDPATH**/ ?>

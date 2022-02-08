@@ -46,3 +46,4 @@
         <link rel="stylesheet" href="css/style.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
+<?php /**PATH C:\xampp\htdocs\ems\resources\views/layout/partials/head.blade.php ENDPATH**/ ?>

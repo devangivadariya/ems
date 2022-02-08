@@ -77,12 +77,7 @@ Route::get('/attendance', function () {
 Route::get('/attendance-employee', function () {
     return view('attendance-employee');
 });
-Route::get('/departments', function () {
-    return view('departments');
-});
-Route::get('/designations', function () {
-    return view('designations');
-});
+
 Route::get('/timesheet', function () {
     return view('timesheet');
 });
@@ -464,3 +459,9 @@ Route::get('/archived-jobs', function () {
 Route::get('/sub-category', function () {
     return view('sub-category');
 });
+
+Route::get('/departments', [App\Http\Controllers\DepartmentController::class, 'departments'])->name('departments');
+Route::get('/designations', [App\Http\Controllers\DesignationsController::class, 'designations'])->name('designations');
+
+Route::post('/add_dep', [App\Http\Controllers\DepartmentController::class, 'add_dep'])->name('add_dep');
+Route::post('/add_des', [App\Http\Controllers\DesignationsController::class, 'add_des'])->name('add_des');

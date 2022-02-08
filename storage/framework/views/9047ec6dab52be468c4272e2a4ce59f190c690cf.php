@@ -1,5 +1,5 @@
-@extends('layout.mainlayout')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 			
@@ -37,25 +37,25 @@
                                 </thead>
                                 <tbody>
                                     
-                                    @foreach($designation as $item) 
-                                        @foreach ($item->designations_r as $data)
+                                    <?php $__currentLoopData = $designation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                                        <?php $__currentLoopData = $item->designations_r; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         
                                             <tr>
-                                                <td>{!! $data->id !!}</td>
-                                                <td>{!! $data->designations !!}</td>
-                                                <td>{!! $item->name !!}</td>
+                                                <td><?php echo $data->id; ?></td>
+                                                <td><?php echo $data->designations; ?></td>
+                                                <td><?php echo $item->name; ?></td>
                                                 <td class="text-right">
                                                 <div class="dropdown dropdown-action">
                                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation_{!! $data->id !!}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation_{!! $data->id !!}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation_<?php echo $data->id; ?>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation_<?php echo $data->id; ?>"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                     </div>
                                                     </div>
                                                 </td>
                                             </tr>
-                                        @endforeach
-                                    @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
@@ -75,8 +75,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{route('add_des')}}" method="post">
-                                @csrf
+                            <form action="<?php echo e(route('add_des')); ?>" method="post">
+                                <?php echo csrf_field(); ?>
                                 <div class="form-group">
                                     <label>Designation Name <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" name="designations">
@@ -85,9 +85,9 @@
                                     <label>Department <span class="text-danger">*</span></label>
                                     <select class="select" name="id">
                                         <option>Select Department</option>
-                                        @foreach($designation as $data) 
-                                            <option value="{{$data->id}}">{{$data->name}}</option>
-                                        @endforeach  
+                                        <?php $__currentLoopData = $designation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                                            <option value="<?php echo e($data->id); ?>"><?php echo e($data->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>  
                                     </select>
                                 </div>
                                 <div class="submit-section">
@@ -101,9 +101,9 @@
             <!-- /Add Designation Modal -->
             
             <!-- Edit Designation Modal -->
-            @foreach($designation as $item) 
-                @foreach ($item->designations_r as $data)
-                    <div id="edit_designation_{!! $data->id !!}" class="modal custom-modal fade" role="dialog">
+            <?php $__currentLoopData = $designation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                <?php $__currentLoopData = $item->designations_r; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div id="edit_designation_<?php echo $data->id; ?>" class="modal custom-modal fade" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -113,21 +113,21 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{route('add_des')}}" method="post">
-                                        @csrf
+                                    <form action="<?php echo e(route('add_des')); ?>" method="post">
+                                        <?php echo csrf_field(); ?>
                                         <div class="form-group">
                                             <label>Designation Name <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" value="{!! $data->designations !!}" name="designations">
+                                            <input class="form-control" type="text" value="<?php echo $data->designations; ?>" name="designations">
                                         </div>
                                         <div class="form-group">
                                             <label>Department <span class="text-danger">*</span></label>
                                             <select class="select" name="id">
-                                                @foreach($designation as $data_val) 
-                                                    <option value="{{$data_val->id}}" {{$data_val->id == $data->department_id  ? 'selected' : ''}}>{{$data_val->name}}</option>
-                                                @endforeach 
+                                                <?php $__currentLoopData = $designation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data_val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                                                    <option value="<?php echo e($data_val->id); ?>" <?php echo e($data_val->id == $data->department_id  ? 'selected' : ''); ?>><?php echo e($data_val->name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
                                             </select>
                                         </div>
-                                        <input type="hidden" name="edit_id" value="{{ $data->id }}">
+                                        <input type="hidden" name="edit_id" value="<?php echo e($data->id); ?>">
                                         <div class="submit-section">
                                             <button class="btn btn-primary submit-btn">Save</button>
                                         </div>
@@ -136,14 +136,14 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-            @endforeach  
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>  
             <!-- /Edit Designation Modal -->
             
             <!-- Delete Designation Modal -->
-            @foreach($designation as $item) 
-                @foreach ($item->designations_r as $data) 
-                    <div class="modal custom-modal fade" id="delete_designation_{!! $data->id !!}" role="dialog">
+            <?php $__currentLoopData = $designation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                <?php $__currentLoopData = $item->designations_r; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                    <div class="modal custom-modal fade" id="delete_designation_<?php echo $data->id; ?>" role="dialog">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-body">
@@ -152,9 +152,9 @@
                                         <p>Are you sure want to delete?</p>
                                     </div>
                                     <div class="modal-btn delete-action">
-                                        <form action="{{route('add_des')}}" method="post">
-                                            @csrf
-                                            <input type="hidden" value="{{$data->id}}" name='del_id'>
+                                        <form action="<?php echo e(route('add_des')); ?>" method="post">
+                                            <?php echo csrf_field(); ?>
+                                            <input type="hidden" value="<?php echo e($data->id); ?>" name='del_id'>
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <button class="btn btn-primary continue-btn" id="delete_btn">Delete</button>
@@ -169,10 +169,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-            @endforeach  
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>  
             <!-- /Delete Designation Modal -->
         
         </div>
         <!-- /Page Wrapper -->
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.mainlayout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\ems\resources\views/designations.blade.php ENDPATH**/ ?>
