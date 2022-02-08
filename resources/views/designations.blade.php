@@ -2,10 +2,8 @@
 @section('content')
 <!-- Page Wrapper -->
 <div class="page-wrapper">
-			
             <!-- Page Content -->
             <div class="content container-fluid">
-            
                 <!-- Page Header -->
                 <div class="page-header">
                     <div class="row align-items-center">
@@ -22,7 +20,21 @@
                     </div>
                 </div>
                 <!-- /Page Header -->
-                
+                @if ($message = Session::get('success'))
+				    <div class="alert alert-success">
+						<p>{{ $message }}</p>
+					</div>
+				@endif   
+				@if ($errors->any())
+					<div class="alert alert-danger">
+						<strong>Whoops!</strong> There were some problems with your input.<br><br>
+							<ul>
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+					</div>
+				@endif
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
@@ -36,10 +48,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
                                     @foreach($designation as $item) 
                                         @foreach ($item->designations_r as $data)
-                                        
                                             <tr>
                                                 <td>{!! $data->id !!}</td>
                                                 <td>{!! $data->designations !!}</td>
@@ -48,8 +58,8 @@
                                                 <div class="dropdown dropdown-action">
                                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation_{!! $data->id !!}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation_{!! $data->id !!}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        <a class="dropdown-item edit_dep" href="#" data-toggle="modal" data-target="#edit_designation" id="{!! $data->id !!}" data-dep="{!! $data->designations !!}" data-des="{{ $item->id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a class="dropdown-item del_dep" href="#" data-toggle="modal" data-target="#delete_designation" id="{!! $data->id !!}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                     </div>
                                                     </div>
                                                 </td>
@@ -101,9 +111,8 @@
             <!-- /Add Designation Modal -->
             
             <!-- Edit Designation Modal -->
-            @foreach($designation as $item) 
-                @foreach ($item->designations_r as $data)
-                    <div id="edit_designation_{!! $data->id !!}" class="modal custom-modal fade" role="dialog">
+           
+                    <div id="edit_designation" class="modal custom-modal fade" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -117,17 +126,19 @@
                                         @csrf
                                         <div class="form-group">
                                             <label>Designation Name <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" value="{!! $data->designations !!}" name="designations">
+                                            <input class="form-control" type="text" value="" name="designations" id="designations">
                                         </div>
                                         <div class="form-group">
                                             <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select" name="id">
+                                            <select class="select" name="id" id="department_sel">
+                                           
                                                 @foreach($designation as $data_val) 
                                                     <option value="{{$data_val->id}}" {{$data_val->id == $data->department_id  ? 'selected' : ''}}>{{$data_val->name}}</option>
                                                 @endforeach 
+                                           
                                             </select>
                                         </div>
-                                        <input type="hidden" name="edit_id" value="{{ $data->id }}">
+                                        <input type="hidden" name="edit_id" value="" id="edit_id">
                                         <div class="submit-section">
                                             <button class="btn btn-primary submit-btn">Save</button>
                                         </div>
@@ -136,14 +147,12 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-            @endforeach  
+                
             <!-- /Edit Designation Modal -->
             
             <!-- Delete Designation Modal -->
-            @foreach($designation as $item) 
-                @foreach ($item->designations_r as $data) 
-                    <div class="modal custom-modal fade" id="delete_designation_{!! $data->id !!}" role="dialog">
+           
+                    <div class="modal custom-modal fade" id="delete_designation" role="dialog">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-body">
@@ -154,7 +163,7 @@
                                     <div class="modal-btn delete-action">
                                         <form action="{{route('add_des')}}" method="post">
                                             @csrf
-                                            <input type="hidden" value="{{$data->id}}" name='del_id'>
+                                            <input type="hidden" value="" name='del_id' id="del_id">
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <button class="btn btn-primary continue-btn" id="delete_btn">Delete</button>
@@ -169,10 +178,25 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-            @endforeach  
+               
             <!-- /Delete Designation Modal -->
         
         </div>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            jQuery(".edit_dep").click(function(event) {
+                var id = jQuery(this).attr('id');
+                var des = jQuery(this).attr('data-des');
+                var name = jQuery(this).attr('data-dep');
+                jQuery("#designations").val(name);
+                jQuery("#edit_id").val(id);
+                jQuery('#department_sel').val(des).trigger("change");
+            });
+            jQuery(".del_dep").click(function(event) {
+                var id = jQuery(this).attr('id');
+                jQuery("#del_id").val(id);
+            });
+        });
+        </script>
         <!-- /Page Wrapper -->
 @endsection

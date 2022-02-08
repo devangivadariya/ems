@@ -19,6 +19,10 @@ class DesignationsController extends Controller
     }
     public function add_des(Request $request)
     {
+        $request->validate([
+            'designations' => 'required'
+        ]);
+        
         $del_id = $request->del_id;
         $edit_id = $request->edit_id;
         if(isset($del_id)){

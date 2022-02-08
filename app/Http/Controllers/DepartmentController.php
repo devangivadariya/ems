@@ -13,6 +13,11 @@ class DepartmentController extends Controller
         return view('departments')->with('name',$select);
     }
     public function add_dep(Request $request){
+
+        $request->validate([
+            'name' => 'required'
+        ]);
+        
         $id = $request->id;
         $del_id = $request->del_id;
         if(isset($id)){
